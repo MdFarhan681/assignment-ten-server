@@ -64,7 +64,7 @@ async function run() {
     await client.connect();
     const db = client.db("assignment-ten");
     const modelCollection = db.collection("product");
-    const bookedCollection=db.collection("booking") 
+    const bookedCollection=db.collection("booked") 
 
     // find all
 
@@ -118,6 +118,20 @@ app.get('/myProduct',veryfyToken, async(req,res)=>{
       })
     })
 
+    // show Booking data
+    app.get('/myBooked',veryfyToken, async(req,res)=>{
+  const email=req.query.email
+  const result= await bookedCollection.find({customerEmail:email}).toArray()
+
+  res.send({
+      success: true,
+      data: result, 
+    });
+
+})
+
+
+
     //add product
     app.post('/products',veryfyToken,async (req,res)=>{
       const data=req.body
@@ -129,9 +143,29 @@ app.get('/myProduct',veryfyToken, async(req,res)=>{
       })
     })
 
-    //update data
 
-    app.put(`/update/:id`,veryfyToken,async (req,res)=>{
+//update fetch
+ app.get("/update/:id",veryfyToken, async(req,res)=>{
+      const {id}=req.params
+      const result=await modelCollection.findOne({_id: new ObjectId(id)})
+      
+      
+      res.send({
+        success:true,
+        result
+      })
+    })
+
+
+
+
+
+
+
+
+    //updated data
+
+    app.put(`/update/:id`,async (req,res)=>{
       const {id}=req.params
       const data=req.body
 
@@ -151,6 +185,10 @@ app.get('/myProduct',veryfyToken, async(req,res)=>{
     
     
     })
+
+
+
+
 
     //delete
     app.delete("/products/:id", async(req,res)=>{
