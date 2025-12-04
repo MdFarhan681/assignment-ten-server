@@ -152,6 +152,18 @@ app.get('/myProduct',veryfyToken, async(req,res)=>{
     
     })
 
+    //delete
+    app.delete("/products/:id", async(req,res)=>{
+      const {id}=req.params
+      const result=await modelCollection.deleteOne({_id: new ObjectId(id)})
+      
+      
+      res.send({
+        success:true,
+        result
+      })
+    })
+
       
 
 
