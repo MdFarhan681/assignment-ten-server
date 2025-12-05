@@ -3,7 +3,9 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config()
 const admin = require("firebase-admin");
-const serviceAccount = require("./ServiceKey.json");
+// index.js
+const decoded = Buffer.from(process.env.FIREBASE_SERVICE_KEY, "base64").toString("utf8");
+const serviceAccount = JSON.parse(decoded);
 
 
 const app = express();
@@ -61,7 +63,7 @@ if(!autho){
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const db = client.db("assignment-ten");
     const modelCollection = db.collection("product");
     const bookedCollection=db.collection("booked") 
@@ -208,10 +210,11 @@ app.get('/myProduct',veryfyToken, async(req,res)=>{
 
 
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
