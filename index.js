@@ -75,6 +75,27 @@ async function run() {
       res.send(result);
     });
 
+    //apply filter
+app.get("/products", async (req, res) => {
+  try {
+    const { category } = req.query;
+
+    const query = {};
+    if (category && category.trim() !== "") {
+      query.category = category;
+    }
+
+    const result = await modelCollection.find(query).toArray();
+
+    res.status(200).json(result);
+  } catch (error) {
+    
+  }
+});
+
+
+
+
     //find single
     app.get("/products/:id",veryfyToken, async(req,res)=>{
       const {id}=req.params
