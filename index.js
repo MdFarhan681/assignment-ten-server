@@ -26,7 +26,7 @@ admin.initializeApp({
 const uri =
   `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.1ktlt9d.mongodb.net/?appName=Cluster0`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -63,19 +63,18 @@ if(!autho){
 
 async function run() {
   try {
-    // await client.connect();
+  
     const db = client.db("assignment-ten");
     const modelCollection = db.collection("product");
     const bookedCollection=db.collection("booked") 
 
-    // find all
+    
 
     app.get("/products", async (req, res) => {
       const result = await modelCollection.find().toArray();
       res.send(result);
     });
 
-    //apply filter
 app.get("/products", async (req, res) => {
   try {
     const { category } = req.query;
@@ -215,17 +214,12 @@ app.get('/myProduct',veryfyToken, async(req,res)=>{
 
 
     //delete
-    app.delete("/products/:id", async(req,res)=>{
-      const {id}=req.params
-      const result=await modelCollection.deleteOne({_id: new ObjectId(id)})
-      
-      
-      res.send({
-        success:true,
-        result
-      })
-    })
+  app.delete("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await modelCollection.deleteOne({ _id: new ObjectId(id) });
 
+  
+});
       
 
 
